@@ -8,17 +8,18 @@ public class GoalKeeper : MonoBehaviour
 {
 
     public Animator anim;
-    public LayerMask layermask;
     public GameObject soccerBall;
-    float shootingAngle;
+    
+    float shootingAngleX;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
-        shootingAngle = 2.9f;
-        Invoke("ShootBall",2f);
-        Invoke("PlayAnimation", 2f);
+
+        shootingAngleX = UnityEngine.Random.Range(-2.8f, 2.8f);
+        Invoke("ShootBall",3f);
+        Invoke("PlayAnimation", 3f);
     }
 
     // Update is called once per frame
@@ -28,21 +29,44 @@ public class GoalKeeper : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
+        //LongDiveLeft();
+        //LongDiveRight();
+        //ShortDiveLeft();
+        //ShortDiveRight();
     }
 
     private void ShootBall()
     {
-        soccerBall.velocity = new Vector3(shootingAngle, 5, -6);
+        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(shootingAngleX, 5, -6);
     }
 
     private void PlayAnimation()
     {
 
-        
-        LongDiveRight();
-        LongDiveLeft();
-        ShortDiveRight();
-        ShortDiveLeft();
+        this.anim.SetTrigger(calculateAppropiateAnimation());
+
+    }
+
+    private String calculateAppropiateAnimation()
+    {
+        if (shootingAngleX > 1.5f)
+        {
+            return "longDiveRight";
+        }
+        else if (shootingAngleX > 0f)
+        {
+            return "shortDiveRight";
+        }
+        else if (shootingAngleX < -1.5f)
+        {
+            return "longDiveLeft" ;
+        }
+        else if (shootingAngleX < 0f)
+        {
+            return "shortDiveLeft" ;
+        }
+
+        return "";
     }
 
     private void FixedUpdate()
@@ -83,8 +107,8 @@ public class GoalKeeper : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
+
             this.anim.SetTrigger("longDiveRight");
-            
 
         }
     }
