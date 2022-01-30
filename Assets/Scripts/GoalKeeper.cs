@@ -18,8 +18,8 @@ public class GoalKeeper : MonoBehaviour
         anim = GetComponent<Animator>();
 
         shootingAngleX = UnityEngine.Random.Range(-2.8f, 2.8f);
-        Invoke("ShootBall",3f);
-        Invoke("PlayAnimation", 3f);
+        Invoke("ShootBall",5f);
+        Invoke("PlayAnimation", 5f);
     }
 
     // Update is called once per frame
@@ -29,10 +29,10 @@ public class GoalKeeper : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        //LongDiveLeft();
-        //LongDiveRight();
-        //ShortDiveLeft();
-        //ShortDiveRight();
+        LongDiveLeft();
+        LongDiveRight();
+        ShortDiveLeft();
+        ShortDiveRight();
     }
 
     private void ShootBall()

@@ -14,9 +14,19 @@ public class CopyMotion : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+
+        Invoke("Gravity",1f);
+
         configurableJoint = GetComponent<ConfigurableJoint>();
 
         initalJointRotation = configurableJoint.transform.localRotation;
+    }
+
+    void Gravity()
+    {
+        gameObject.GetComponent<Rigidbody>().useGravity = true;
     }
 
     // Update is called once per frame
