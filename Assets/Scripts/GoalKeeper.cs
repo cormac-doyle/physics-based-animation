@@ -33,17 +33,20 @@ public class GoalKeeper : MonoBehaviour
             
         }
 
-        LongDiveLeft();
-        LongDiveRight();
-        ShortDiveLeft();
-        ShortDiveRight();
+       
+
+        
     }
 
     private void ShootBall(float mousePosX, float mousePosY)
     {
         Vector2 shootVelocities = calcShootVelocities(mousePosX, mousePosY);
 
-        PlayAnimation(-shootVelocities.x);
+        PlayAnimation(-shootVelocities.x, shootVelocities.y);
+
+        Debug.Log(-shootVelocities.x);
+        Debug.Log(shootVelocities.y);
+
 
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-shootVelocities.x, shootVelocities.y, -6.5f);
     }
@@ -75,31 +78,62 @@ public class GoalKeeper : MonoBehaviour
         return (input - input_start) / (input_end - input_start) * (output_end - output_start) + output_start;
     }
     
-    private void PlayAnimation(float shootingAngleX)
+    private void PlayAnimation(float targetPositionX, float targetPositionY)
     {
 
-        this.anim.SetTrigger(calculateAppropiateAnimation(shootingAngleX));
+        this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
 
     }
 
-    private String calculateAppropiateAnimation(float shootingAngleX)
+    private String calculateAppropiateAnimation(float targetPositionX,float targetPositionY)
     {
-        if (shootingAngleX > 1.5f)
+        if (targetPositionY<6.5f)
         {
-            return "longDiveRight";
+            if (targetPositionX > 1.5f)
+            {
+                return "longDiveRight";
+            }
+            else if (targetPositionX > 0.5f)
+            {
+                return "shortDiveRight";
+            }
+            else if (targetPositionX > 0f)
+            {
+                return "lowCatchRight";
+            }
+            else if (targetPositionX < -1.5f)
+            {
+                return "longDiveLeft";
+            }
+            else if (targetPositionX < -0.5f)
+            {
+                return "shortDiveLeft";
+            }
+            else if (targetPositionX < 0f)
+            {
+                return "lowCatchLeft";
+            }
         }
-        else if (shootingAngleX > 0f)
+        else
         {
-            return "shortDiveRight";
+            if (targetPositionX > 1f)
+            {
+                return "longDiveRight";
+            }
+            else if (targetPositionX > 0f)
+            {
+                return "highCatchRight";
+            }
+            else if (targetPositionX < -1f)
+            {
+                return "longDiveLeft";
+            }
+            else if (targetPositionX < 0f)
+            {
+                return "highCatchLeft";
+            }
         }
-        else if (shootingAngleX < -1.5f)
-        {
-            return "longDiveLeft" ;
-        }
-        else if (shootingAngleX < 0f)
-        {
-            return "shortDiveLeft" ;
-        }
+        
 
         return "";
     }
@@ -108,45 +142,5 @@ public class GoalKeeper : MonoBehaviour
     {
 
     }
-
-    private void ShortDiveLeft()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            this.anim.SetTrigger("shortDiveLeft");
-            
-        }
-    }
-
-    private void ShortDiveRight()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            this.anim.SetTrigger("shortDiveRight");
-            
-
-        }
-    }
-
-    private void LongDiveLeft()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            this.anim.SetTrigger("longDiveLeft");
-            
-
-        }
-    }
-
-    private void LongDiveRight()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-
-            this.anim.SetTrigger("longDiveRight");
-
-        }
-    }
-
     
 }
