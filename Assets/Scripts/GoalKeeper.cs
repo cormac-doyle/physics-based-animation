@@ -33,9 +33,6 @@ public class GoalKeeper : MonoBehaviour
             
         }
 
-       
-
-        
     }
 
     private void ShootBall(float mousePosX, float mousePosY)
@@ -62,21 +59,18 @@ public class GoalKeeper : MonoBehaviour
         float postRightX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostRight").transform.position).x;
         float postLeftX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostLeft").transform.position).x;
 
-        float shootingAngleX = mapToRange(mousePosX, postRightX, postLeftX, -2.8f, 2.8f);
+        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -2.8f, 2.8f);
 
 
         float crossBarPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("CrossBar").transform.position).y;
         float groundPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("Ground").transform.position).y;
 
-        float shootingAngleY = mapToRange(mousePosY, groundPosY, crossBarPosY, 5.3f, 7.35f);
+        float shootingAngleY = Utilities.mapToRange(mousePosY, groundPosY, crossBarPosY, 5.3f, 7.35f);
 
         return new Vector2(shootingAngleX, shootingAngleY);
     }
 
-    private float mapToRange(float input, float input_start,float input_end, float output_start, float output_end)
-    {
-        return (input - input_start) / (input_end - input_start) * (output_end - output_start) + output_start;
-    }
+    
     
     private void PlayAnimation(float targetPositionX, float targetPositionY)
     {
