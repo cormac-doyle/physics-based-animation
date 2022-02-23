@@ -9,6 +9,9 @@ public class GoalKeeper : MonoBehaviour
 
     public Animator anim;
     public GameObject soccerBall;
+    public GameObject Post;
+    public GameObject Goal;
+
 
     Camera cam;
     // Start is called before the first frame update
@@ -17,6 +20,8 @@ public class GoalKeeper : MonoBehaviour
         anim = GetComponent<Animator>();
 
         cam = GameObject.Find("Camera").GetComponent<Camera>();
+
+
 
     }
 
@@ -30,7 +35,6 @@ public class GoalKeeper : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             ShootBall(Input.mousePosition.x,Input.mousePosition.y);
-            
         }
 
     }
@@ -56,10 +60,13 @@ public class GoalKeeper : MonoBehaviour
         mousePosX -= MOUSE_ERROR_X;
         mousePosY -= MOUSE_ERROR_Y;
 
+        
+        
+
         float postRightX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostRight").transform.position).x;
         float postLeftX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostLeft").transform.position).x;
 
-        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -2.8f, 2.8f);
+        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -Post.transform.position.x, Post.transform.position.x);
 
 
         float crossBarPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("CrossBar").transform.position).y;
@@ -87,7 +94,7 @@ public class GoalKeeper : MonoBehaviour
             {
                 return "longDiveRight";
             }
-            else if (targetPositionX > 0.5f)
+            else if (targetPositionX > 0.9f)
             {
                 return "shortDiveRight";
             }
@@ -99,7 +106,7 @@ public class GoalKeeper : MonoBehaviour
             {
                 return "longDiveLeft";
             }
-            else if (targetPositionX < -0.5f)
+            else if (targetPositionX < -0.9f)
             {
                 return "shortDiveLeft";
             }
