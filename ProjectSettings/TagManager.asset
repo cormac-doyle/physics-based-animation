@@ -9,6 +9,9 @@ TagManager:
   - Ground
   - PostLeft
   - PostRight
+  - GoalLine
+  - Goalkeeper
+  - SoccerBall
   layers:
   - Default
   - TransparentFX

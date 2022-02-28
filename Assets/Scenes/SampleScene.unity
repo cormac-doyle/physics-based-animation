@@ -794,7 +794,6 @@ GameObject:
   - component: {fileID: 322394423}
   - component: {fileID: 322394420}
   - component: {fileID: 322394419}
-  - component: {fileID: 322394421}
   m_Layer: 6
   m_Name: Player_Animated
   m_TagString: Untagged
@@ -832,18 +831,6 @@ CapsuleCollider:
   m_Height: 2.1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &322394421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322394418}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaa53f8ac87598645819e4235c365ddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &322394423
 Transform:
   m_ObjectHideFlags: 0
@@ -902,7 +889,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.09124453, y: -0.066564, z: -0.000553777}
+  m_ConnectedAnchor: {x: 0.09124453, y: -0.066564, z: -0.00055377925}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1071,9 +1058,10 @@ GameObject:
   - component: {fileID: 510271744}
   - component: {fileID: 510271743}
   - component: {fileID: 510271742}
+  - component: {fileID: 510271746}
   m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
+  m_Name: GoalLine
+  m_TagString: GoalLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1110,7 +1098,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 76f1a0ccebc74854cb63fd9e3a398f77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1148,12 +1136,24 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510271741}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 1, z: -0.5}
-  m_LocalScale: {x: 1, y: 1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0.91, z: -0.09}
+  m_LocalScale: {x: 7.2, y: 3, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &510271746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510271741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ae7160bfb403f4c8f0181ac5e55ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &535838015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6803169544883306252, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
@@ -1724,11 +1724,11 @@ GameObject:
   - component: {fileID: 670013764}
   - component: {fileID: 670013763}
   - component: {fileID: 670013762}
-  - component: {fileID: 670013761}
   - component: {fileID: 670013766}
+  - component: {fileID: 670013761}
   m_Layer: 0
   m_Name: SoccerBall
-  m_TagString: Untagged
+  m_TagString: SoccerBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1742,7 +1742,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 670013760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c24ac34d50e6b64eb8434eb3fbcc001, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a6500ecdd551894b88629a283dced42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &670013762
@@ -3155,7 +3155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3192,6 +3192,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
+      propertyPath: m_TagString
+      value: Goalkeeper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
@@ -3584,7 +3588,6 @@ MonoBehaviour:
   anim: {fileID: 1262794355}
   soccerBall: {fileID: 670013760}
   Post: {fileID: 1680368759}
-  Goal: {fileID: 0}
 --- !u!114 &1262794359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4831,7 +4834,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0024468026, y: -0.4059544, z: -0.005145282}
+  m_ConnectedAnchor: {x: 0.0024468026, y: -0.4059544, z: -0.0051452797}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -4912,7 +4915,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0024467986, y: -0.40595406, z: -0.005170414}
+  m_ConnectedAnchor: {x: -0.0024467986, y: -0.40595406, z: -0.005170411}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -5220,7 +5223,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000011901354, y: 0.3871452, z: 0.023088738}
+  m_ConnectedAnchor: {x: -0.0000011901354, y: 0.3871452, z: 0.023088736}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -5848,7 +5851,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.091244526, y: -0.066563986, z: -0.000553782}
+  m_ConnectedAnchor: {x: -0.091244526, y: -0.066563986, z: -0.00055377925}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:

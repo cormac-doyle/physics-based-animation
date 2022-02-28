@@ -10,7 +10,6 @@ public class GoalKeeper : MonoBehaviour
     public Animator anim;
     public GameObject soccerBall;
     public GameObject Post;
-    public GameObject Goal;
 
 
     Camera cam;
@@ -30,29 +29,51 @@ public class GoalKeeper : MonoBehaviour
     {
 
         if (Input.GetKeyDown(KeyCode.R))
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            resetScene();
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            ShootBall(Input.mousePosition.x,Input.mousePosition.y);
+            calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
         }
 
     }
 
-    private void ShootBall(float mousePosX, float mousePosY)
+    public void resetScene()
     {
-        Vector2 shootVelocities = calcShootVelocities(mousePosX, mousePosY);
+        gameObject.transform.position = new Vector3(0, 0, 0);
+        gameObject.transform.rotation = new Quaternion(0,0,0,0);
 
-        PlayAnimation(-shootVelocities.x, shootVelocities.y);
+        soccerBall.transform.position = new Vector3(0, 0.11f, 11);
+        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(0,0 ,0);
+        soccerBall.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
+        soccerBall.GetComponent<GoalDetection>().setGoalStatusFalse();
 
-        Debug.Log(-shootVelocities.x);
-        Debug.Log(shootVelocities.y);
 
-
-        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-shootVelocities.x, shootVelocities.y, -6.5f);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private Vector2 calcShootVelocities(float mousePosX, float mousePosY)
+    public void calcBallTargetPos(float mousePosX, float mousePosY)
+    {
+
+    
+
+        Vector2 shootVelocities = calcShootVelocities(mousePosX, mousePosY);
+
+
+        shootBall(shootVelocities);
+    }
+
+    public void shootBall(Vector2 targetPos)
+    {
+        Debug.Log(targetPos);
+        PlayAnimation(-targetPos.x, targetPos.y);
+
+        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -8.5f);
+
+    }
+
+
+    public Vector2 calcShootVelocities(float mousePosX, float mousePosY)
     {
         float MOUSE_ERROR_X = -15f;
         float MOUSE_ERROR_Y = 15f;
@@ -60,19 +81,17 @@ public class GoalKeeper : MonoBehaviour
         mousePosX -= MOUSE_ERROR_X;
         mousePosY -= MOUSE_ERROR_Y;
 
-        
-        
-
+       
         float postRightX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostRight").transform.position).x;
         float postLeftX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostLeft").transform.position).x;
 
-        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -Post.transform.position.x, Post.transform.position.x);
+        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -Post.transform.position.x +0.8f, Post.transform.position.x-0.8f);
 
 
         float crossBarPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("CrossBar").transform.position).y;
         float groundPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("Ground").transform.position).y;
 
-        float shootingAngleY = Utilities.mapToRange(mousePosY, groundPosY, crossBarPosY, 5.3f, 7.35f);
+        float shootingAngleY = Utilities.mapToRange(mousePosY, groundPosY, crossBarPosY, 5.6f, 8.2f);
 
         return new Vector2(shootingAngleX, shootingAngleY);
     }
