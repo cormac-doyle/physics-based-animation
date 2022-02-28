@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GoalTest
 {
     float loadingTime = 0.3f;
+    float shotIncrement = 0.25f;
     int shotCount = 5;
     GoalKeeper goalkeeper;
     GoalDetection soccerBall;
@@ -37,8 +38,6 @@ public class GoalTest
         goalkeeper.resetScene();
         Assert.IsFalse(soccerBall.getGoalStatus());
 
-
-
     }
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
@@ -53,17 +52,15 @@ public class GoalTest
         {
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
-            
-            goalkeeper.shootBall(normaliseTargetPos(targetZones[0]));
-            yield return new WaitForSeconds(3);
+            Vector2 targetPos = getTargetPos(i, targetZones[0]);
 
-            if (!soccerBall.getGoalStatus())
-            {
-                saveCount++;
-            }
+            goalkeeper.shootBall(normaliseTargetPos(targetPos));
+            yield return new WaitForSeconds(3);
+            saveCount += wasSaved(targetPos);
         }
 
-       Assert.AreEqual(saveCount, shotCount);
+        Assert.AreEqual(shotCount, saveCount);
+
 
     }
 
@@ -77,16 +74,15 @@ public class GoalTest
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
 
-            goalkeeper.shootBall(normaliseTargetPos(targetZones[1]));
-            yield return new WaitForSeconds(3);
+            Vector2 targetPos = getTargetPos(i, targetZones[1]);
 
-            if (!soccerBall.getGoalStatus())
-            {
-                saveCount++;
-            }
+            goalkeeper.shootBall(normaliseTargetPos(targetPos));
+            yield return new WaitForSeconds(3);
+            saveCount += wasSaved(targetPos);
         }
 
-        Assert.AreEqual(saveCount, shotCount);
+        Assert.AreEqual(shotCount, saveCount);
+
 
     }
 
@@ -100,17 +96,15 @@ public class GoalTest
         {
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
+            Vector2 targetPos = getTargetPos(i, targetZones[2]);
 
-            goalkeeper.shootBall(normaliseTargetPos(targetZones[2]));
+            goalkeeper.shootBall(normaliseTargetPos(targetPos));
             yield return new WaitForSeconds(3);
-
-            if (!soccerBall.getGoalStatus())
-            {
-                saveCount++;
-            }
+            saveCount += wasSaved(targetPos);
         }
 
-        Assert.AreEqual(saveCount, shotCount);
+        Assert.AreEqual(shotCount, saveCount);
+
 
     }
 
@@ -124,17 +118,15 @@ public class GoalTest
         {
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
-            Debug.Log(targetZones[3]);
-            goalkeeper.shootBall(normaliseTargetPos(targetZones[3]));
-            yield return new WaitForSeconds(3);
+            Vector2 targetPos = getTargetPos(i, targetZones[3]);
 
-            if (!soccerBall.getGoalStatus())
-            {
-                saveCount++;
-            }
+            goalkeeper.shootBall(normaliseTargetPos(targetPos));
+            yield return new WaitForSeconds(3);
+            saveCount += wasSaved(targetPos);
         }
 
-        Assert.AreEqual(saveCount, shotCount);
+        Assert.AreEqual(shotCount, saveCount);
+
 
     }
 
@@ -148,20 +140,20 @@ public class GoalTest
         {
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
-            Debug.Log(targetZones[4]);
-            goalkeeper.shootBall(normaliseTargetPos(targetZones[4]));
-            yield return new WaitForSeconds(3);
+            Vector2 targetPos = getTargetPos(i, targetZones[4]);
 
-            if (!soccerBall.getGoalStatus())
-            {
-                saveCount++;
-            }
+            goalkeeper.shootBall(normaliseTargetPos(targetPos));
+            yield return new WaitForSeconds(3);
+            saveCount += wasSaved(targetPos);
         }
 
-        Assert.AreEqual(saveCount, shotCount);
+        Assert.AreEqual(shotCount, saveCount);
+
 
 
     }
+
+
 
     [UnityTest]
     public IEnumerator LongDiveHigh()
@@ -174,16 +166,31 @@ public class GoalTest
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
             Debug.Log(targetZones[5]);
-            goalkeeper.shootBall(normaliseTargetPos(targetZones[5]));
-            yield return new WaitForSeconds(3);
+            Vector2 targetPos = getTargetPos(i, targetZones[4]);
 
-            if (!soccerBall.getGoalStatus())
-            {
-                saveCount++;
-            }
+            goalkeeper.shootBall(normaliseTargetPos(targetPos));
+            yield return new WaitForSeconds(3);
+            saveCount += wasSaved(targetPos);
         }
 
-        Assert.AreEqual(saveCount, shotCount);
+        Assert.AreEqual(shotCount, saveCount);
+
+
+    }
+
+    private int wasSaved(Vector2 targetPos)
+    {
+        Debug.Log(targetPos);
+        if (!soccerBall.getGoalStatus())
+        {
+            Debug.Log("Saved");
+            return 1;
+        }
+        else
+        {
+            Debug.Log("Scored");
+            return 0;
+        }
 
 
     }
@@ -191,5 +198,22 @@ public class GoalTest
     private Vector2 normaliseTargetPos(Vector2 targetPos)
     {
         return new Vector2((targetPos.x / 3.5f) * 2.6f, (targetPos.y * 1.7f / 2.5f)+6.4f);
+    }
+
+    private Vector2 getTargetPos(int index ,Vector2 targetPos)
+    {
+        switch (index)
+        {
+            case 1:
+                return new Vector2(targetPos.x + shotIncrement, targetPos.y + shotIncrement);
+            case 2:
+                return new Vector2(targetPos.x + shotIncrement, targetPos.y - shotIncrement);
+            case 3:
+                return new Vector2(targetPos.x - shotIncrement, targetPos.y - shotIncrement);
+            case 4:
+                return new Vector2(targetPos.x - shotIncrement, targetPos.y + shotIncrement);
+        }
+
+        return targetPos;
     }
 }
