@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GoalTest
 {
-    float loadingTime = 0.3f;
+    float loadingTime = 0.5f;
     float shotIncrement = 0.25f;
     int shotCount = 5;
     GoalKeeper goalkeeper;
@@ -52,6 +52,7 @@ public class GoalTest
         {
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
+
             Vector2 targetPos = getTargetPos(i, targetZones[0]);
 
             goalkeeper.shootBall(normaliseTargetPos(targetPos));
@@ -165,8 +166,8 @@ public class GoalTest
         {
             yield return new WaitForSeconds(loadingTime);
             beforeEach();
-            Debug.Log(targetZones[5]);
-            Vector2 targetPos = getTargetPos(i, targetZones[4]);
+            
+            Vector2 targetPos = getTargetPos(i, targetZones[5]);
 
             goalkeeper.shootBall(normaliseTargetPos(targetPos));
             yield return new WaitForSeconds(3);
@@ -180,7 +181,7 @@ public class GoalTest
 
     private int wasSaved(Vector2 targetPos)
     {
-        Debug.Log(targetPos);
+        Debug.Log("targetPos"+targetPos);
         if (!soccerBall.getGoalStatus())
         {
             Debug.Log("Saved");
@@ -196,8 +197,9 @@ public class GoalTest
     }
 
     private Vector2 normaliseTargetPos(Vector2 targetPos)
-    {
-        return new Vector2((targetPos.x / 3.5f) * 2.6f, (targetPos.y * 1.7f / 2.5f)+6.4f);
+    {;
+        Debug.Log("Normalised: " + new Vector2((targetPos.x / 3.5f) * 3.3f, (targetPos.y * 1.9f / 2.5f) + 5.7f));
+        return new Vector2((targetPos.x / 3.5f) * 3.3f, (targetPos.y * 1.9f / 2.5f)+5.7f);
     }
 
     private Vector2 getTargetPos(int index ,Vector2 targetPos)

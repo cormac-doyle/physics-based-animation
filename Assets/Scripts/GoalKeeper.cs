@@ -68,7 +68,7 @@ public class GoalKeeper : MonoBehaviour
         Debug.Log(targetPos);
         PlayAnimation(-targetPos.x, targetPos.y);
 
-        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -8.5f);
+        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -10f);
 
     }
 
@@ -85,13 +85,13 @@ public class GoalKeeper : MonoBehaviour
         float postRightX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostRight").transform.position).x;
         float postLeftX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostLeft").transform.position).x;
 
-        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -Post.transform.position.x +0.8f, Post.transform.position.x-0.8f);
+        float shootingAngleX = Utilities.mapToRange(mousePosX, postRightX, postLeftX, -Post.transform.position.x +0.3f, Post.transform.position.x-0.3f);
 
 
         float crossBarPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("CrossBar").transform.position).y;
         float groundPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("Ground").transform.position).y;
 
-        float shootingAngleY = Utilities.mapToRange(mousePosY, groundPosY, crossBarPosY, 5.6f, 8.2f);
+        float shootingAngleY = Utilities.mapToRange(mousePosY, groundPosY, crossBarPosY, 4.8f, 7.4f);
 
         return new Vector2(shootingAngleX, shootingAngleY);
     }

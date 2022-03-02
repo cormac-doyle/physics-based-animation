@@ -6,14 +6,14 @@ public class GoalDetection : MonoBehaviour
 {
     private bool goal = false;
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.name == "GoalLine")
+        if (other.gameObject.name == "GoalLine")
         {
-            Debug.Log("GOAL");
+            //Debug.Log("GOAL");
             goal = true;
         }
-        
+
     }
     public bool getGoalStatus()
     {
