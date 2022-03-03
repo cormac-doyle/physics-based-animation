@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class GoalKeeper : MonoBehaviour
 {
 
@@ -19,8 +20,6 @@ public class GoalKeeper : MonoBehaviour
         anim = GetComponent<Animator>();
 
         cam = GameObject.Find("Camera").GetComponent<Camera>();
-
-
 
     }
 
@@ -104,58 +103,64 @@ public class GoalKeeper : MonoBehaviour
         this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
 
     }
+   
 
-    private String calculateAppropiateAnimation(float targetPositionX,float targetPositionY)
+    private String calculateAppropiateAnimation(float x,float y)
     {
-        if (targetPositionY<6.5f)
+        Debug.Log(x + ", " + y);
+
+        String diveDirection;
+        if (x <= 0)
         {
-            if (targetPositionX > 1.5f)
-            {
-                return "longDiveRight";
-            }
-            else if (targetPositionX > 0.9f)
-            {
-                return "shortDiveRight";
-            }
-            else if (targetPositionX > 0f)
-            {
-                return "lowCatchRight";
-            }
-            else if (targetPositionX < -1.5f)
-            {
-                return "longDiveLeft";
-            }
-            else if (targetPositionX < -0.9f)
-            {
-                return "shortDiveLeft";
-            }
-            else if (targetPositionX < 0f)
-            {
-                return "lowCatchLeft";
-            }
+            diveDirection = "Left";
         }
         else
         {
-            if (targetPositionX > 1f)
-            {
-                return "longDiveRight";
-            }
-            else if (targetPositionX > 0f)
-            {
-                return "highCatchRight";
-            }
-            else if (targetPositionX < -1f)
-            {
-                return "longDiveLeft";
-            }
-            else if (targetPositionX < 0f)
-            {
-                return "highCatchLeft";
-            }
+            diveDirection = "Right";
         }
-        
+        x = System.Math.Abs(x);
 
-        return "";
+
+        if (checkForLowCatch(x, y))
+        {
+            return "lowCatch" + diveDirection;
+        }
+        if (checkForShortDive(x, y))
+        {
+            return "shortDive" + diveDirection;
+        }
+
+        if (x < 1.3)
+        {
+            return "highCatch" + diveDirection;
+        }
+
+        
+        return "longDive" + diveDirection;
+    }
+
+    private bool checkForLowCatch(float x,float y)
+    {
+        if (x < 1 && y < 6.2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool checkForShortDive(float x,float y)
+    {
+        if (x<1.5 && y<6)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void FixedUpdate()

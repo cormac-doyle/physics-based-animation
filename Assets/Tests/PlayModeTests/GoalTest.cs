@@ -15,11 +15,11 @@ public class GoalTest
 
     Vector2[] targetZones = 
         {
-        new Vector2(1, 1),
-        new Vector2(1, 2),
-        new Vector2(2, 1),
-        new Vector2(2, 2),
-        new Vector2(3, 1),
+        new Vector2(0.5f, 0.3f),
+        new Vector2(0.6f, 2),
+        new Vector2(1.25f, 0.25f),
+        new Vector2(1.5f, 2),
+        new Vector2(3, 0.75f),
         new Vector2(3, 2)
         };
 
