@@ -11,6 +11,7 @@ public class GoalKeeper : MonoBehaviour
     public Animator anim;
     public GameObject soccerBall;
     public GameObject Post;
+    public GameObject controller;
 
 
     Camera cam;
@@ -67,6 +68,8 @@ public class GoalKeeper : MonoBehaviour
         Debug.Log(targetPos);
         PlayAnimation(-targetPos.x, targetPos.y);
 
+
+
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -10f);
 
     }
@@ -101,6 +104,8 @@ public class GoalKeeper : MonoBehaviour
     {
 
         this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
+
+        controller.GetComponent<Rigidbody>().AddForce(-1f, 0f, 0f, ForceMode.Acceleration);
 
     }
    
