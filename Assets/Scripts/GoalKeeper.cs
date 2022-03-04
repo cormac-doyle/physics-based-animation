@@ -15,6 +15,8 @@ public class GoalKeeper : MonoBehaviour
     private float startTime;
     private bool moveController=false;
 
+    float timeTillJump = 0.55f;
+
     Camera cam;
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,7 @@ public class GoalKeeper : MonoBehaviour
 
     }
     private Vector2 targetPos;
+    private Vector3 slerp;
     // Update is called once per frame
     void Update()
     {
@@ -40,13 +43,19 @@ public class GoalKeeper : MonoBehaviour
         if (moveController)
         {
             Vector3 relativeBallPos = new Vector3((targetPos.x - 2.2f) * -1, targetPos.y - 5.6f + 1f, 0);
-            //move parent so characters arms connect to target ball position
-            Debug.Log("play anim = true Controller pos: " + controller.transform.position);
+            //controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), relativeBallPos, (Time.time - startTime) / (0.96f- timeTillJump));
+            slerp = Vector3.Slerp(new Vector3(0, 1, 0), new Vector3((targetPos.x - 2.2f) * -2 , 1, 0), (Time.time - startTime) / ((0.96f - timeTillJump)*2));
+            
 
-            controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), relativeBallPos, (Time.time - startTime) / 0.56f);
+            controller.transform.position = new Vector3(slerp.x,((slerp.y * relativeBallPos.y / 1.2f) ), 0);
+            if ((Time.time - startTime) / (0.96f - timeTillJump) >= 0.49f && (Time.time - startTime) / (0.96f - timeTillJump) <= 0.51f)
+            {
+                Debug.Log("target pos: " + relativeBallPos);
+                Debug.Log("actual pos: " + controller.transform.position);
+
+            }
 
         }
-
 
     }
 
@@ -84,13 +93,13 @@ public class GoalKeeper : MonoBehaviour
 
     public void shootBall(Vector2 targetPos)
     {
-        Debug.Log(targetPos);
+        //Debug.Log(targetPos);
         PlayAnimation(-targetPos.x, targetPos.y);
 
 
 
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -10f);
-        Debug.Log("TimeShoot: "+Time.time);
+        //Debug.Log("TimeShoot: "+Time.time);
 
     }
 
@@ -119,7 +128,7 @@ public class GoalKeeper : MonoBehaviour
 
 
         Vector3 predictedTargetLoc = cam.ScreenToWorldPoint(new Vector3(shootingAngleX, shootingAngleY, 0));
-        Debug.Log("Predicted Loc:" + new Vector3(shootingAngleX, shootingAngleY, 0));
+       // Debug.Log("Predicted Loc:" + new Vector3(shootingAngleX, shootingAngleY, 0));
         
 
 
@@ -140,9 +149,9 @@ public class GoalKeeper : MonoBehaviour
 
     IEnumerator StartController()
     {
-        Debug.Log("start playing anim");
-        Debug.Log("Controller start pos: " + controller.transform.position);
-        yield return new WaitForSeconds(0.4f);
+        //Debug.Log("start playing anim");
+        //Debug.Log("Controller start pos: " + controller.transform.position);
+        yield return new WaitForSeconds(timeTillJump);
 
         moveController = true;
         startTime = Time.time;
@@ -150,14 +159,14 @@ public class GoalKeeper : MonoBehaviour
         
         
         
-        Debug.Log("start moving controller");
+        //Debug.Log("start moving controller");
     }
 
   
 
     private String calculateAppropiateAnimation(float x,float y)
     {
-        Debug.Log(x + ", " + y);
+        //Debug.Log(x + ", " + y);
 
         String diveDirection;
         if (x <= 0)
