@@ -12,7 +12,8 @@ public class GoalKeeper : MonoBehaviour
     public GameObject soccerBall;
     public GameObject Post;
     public GameObject controller;
-
+    private float startTime;
+    private bool playAnim=false;
 
     Camera cam;
     // Start is called before the first frame update
@@ -36,19 +37,30 @@ public class GoalKeeper : MonoBehaviour
             calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
         }
 
+        if (playAnim)
+        {
+           // Vector2 relativeBallPos = new Vector2(2.2-BallPredictedTransform.X, 1.3 - BallPredictedTransform.Y) 
+            controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), new Vector3(-1, 1, 0), (Time.time - startTime) / 0.96f);
+
+        }
     }
 
     public void resetScene()
     {
+        controller.transform.position = new Vector3(0, 1, 0);
+        controller.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        playAnim = false;
+
+        gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         gameObject.transform.position = new Vector3(0, 0, 0);
-        gameObject.transform.rotation = new Quaternion(0,0,0,0);
+        
 
         soccerBall.transform.position = new Vector3(0, 0.11f, 11);
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(0,0 ,0);
         soccerBall.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
         soccerBall.GetComponent<GoalDetection>().setGoalStatusFalse();
 
-
+        
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -71,6 +83,7 @@ public class GoalKeeper : MonoBehaviour
 
 
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -10f);
+        Debug.Log("TimeShoot: "+Time.time);
 
     }
 
@@ -104,8 +117,8 @@ public class GoalKeeper : MonoBehaviour
     {
 
         this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
-
-        controller.GetComponent<Rigidbody>().AddForce(-1f, 0f, 0f, ForceMode.Acceleration);
+        startTime = Time.time;
+        playAnim = true;
 
     }
    

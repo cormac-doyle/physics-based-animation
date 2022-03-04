@@ -8,6 +8,16 @@ public class GoalDetection : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
+        Debug.Log("Time Collision: "+Time.time);
+        GameObject hand = GameObject.Find("mixamorig:LeftHand");
+        Debug.Log("hand:"+hand.transform.position);
+
+        GameObject foot = GameObject.Find("mixamorig:LeftFoot");
+        Debug.Log("foot: "+foot.transform.position);
+
+        
+        Debug.Log("ball: " + transform.position);
+
         if (other.gameObject.name == "GoalLine")
         {
             //Debug.Log("GOAL");
