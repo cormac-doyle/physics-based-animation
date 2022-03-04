@@ -13,7 +13,7 @@ public class GoalKeeper : MonoBehaviour
     public GameObject Post;
     public GameObject controller;
     private float startTime;
-    private bool playAnim=false;
+    private bool moveController=false;
 
     Camera cam;
     // Start is called before the first frame update
@@ -37,19 +37,24 @@ public class GoalKeeper : MonoBehaviour
             targetPos = calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
         }
 
-        if (playAnim)
+        if (moveController)
         {
-            Vector2 relativeBallPos = new Vector2(2.2f - targetPos.x, 1.3f - targetPos.y - 5.6f);
-            //controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), new Vector3(-1, 1, 0), (Time.time - startTime) / 0.96f);
+            Vector3 relativeBallPos = new Vector3((targetPos.x - 2.2f) * -1, targetPos.y - 5.6f + 1f, 0);
+            //move parent so characters arms connect to target ball position
+            Debug.Log("play anim = true Controller pos: " + controller.transform.position);
+
+            controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), relativeBallPos, (Time.time - startTime) / 0.56f);
 
         }
+
+
     }
 
     public void resetScene()
     {
         controller.transform.position = new Vector3(0, 1, 0);
         controller.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        playAnim = false;
+        moveController = false;
 
         gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         gameObject.transform.position = new Vector3(0, 0, 0);
@@ -127,11 +132,28 @@ public class GoalKeeper : MonoBehaviour
     {
 
         this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
-        startTime = Time.time;
-        playAnim = true;
+        
+
+        StartCoroutine( StartController());
 
     }
-   
+
+    IEnumerator StartController()
+    {
+        Debug.Log("start playing anim");
+        Debug.Log("Controller start pos: " + controller.transform.position);
+        yield return new WaitForSeconds(0.4f);
+
+        moveController = true;
+        startTime = Time.time;
+
+        
+        
+        
+        Debug.Log("start moving controller");
+    }
+
+  
 
     private String calculateAppropiateAnimation(float x,float y)
     {
