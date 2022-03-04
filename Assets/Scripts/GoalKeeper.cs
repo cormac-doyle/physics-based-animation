@@ -24,7 +24,7 @@ public class GoalKeeper : MonoBehaviour
         cam = GameObject.Find("Camera").GetComponent<Camera>();
 
     }
-
+    private Vector2 targetPos;
     // Update is called once per frame
     void Update()
     {
@@ -34,13 +34,13 @@ public class GoalKeeper : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
+            targetPos = calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
         }
 
         if (playAnim)
         {
-           // Vector2 relativeBallPos = new Vector2(2.2-BallPredictedTransform.X, 1.3 - BallPredictedTransform.Y) 
-            controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), new Vector3(-1, 1, 0), (Time.time - startTime) / 0.96f);
+            Vector2 relativeBallPos = new Vector2(2.2f - targetPos.x, 1.3f - targetPos.y - 5.6f);
+            //controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), new Vector3(-1, 1, 0), (Time.time - startTime) / 0.96f);
 
         }
     }
@@ -64,7 +64,7 @@ public class GoalKeeper : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void calcBallTargetPos(float mousePosX, float mousePosY)
+    public Vector2 calcBallTargetPos(float mousePosX, float mousePosY)
     {
 
     
@@ -73,6 +73,8 @@ public class GoalKeeper : MonoBehaviour
 
 
         shootBall(shootVelocities);
+
+        return shootVelocities;
     }
 
     public void shootBall(Vector2 targetPos)
@@ -96,7 +98,9 @@ public class GoalKeeper : MonoBehaviour
         mousePosX -= MOUSE_ERROR_X;
         mousePosY -= MOUSE_ERROR_Y;
 
-       
+        
+
+
         float postRightX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostRight").transform.position).x;
         float postLeftX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostLeft").transform.position).x;
 
@@ -107,6 +111,12 @@ public class GoalKeeper : MonoBehaviour
         float groundPosY = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("Ground").transform.position).y;
 
         float shootingAngleY = Utilities.mapToRange(mousePosY, groundPosY, crossBarPosY, 4.8f, 7.4f);
+
+
+        Vector3 predictedTargetLoc = cam.ScreenToWorldPoint(new Vector3(shootingAngleX, shootingAngleY, 0));
+        Debug.Log("Predicted Loc:" + new Vector3(shootingAngleX, shootingAngleY, 0));
+        
+
 
         return new Vector2(shootingAngleX, shootingAngleY);
     }
