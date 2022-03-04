@@ -12,6 +12,9 @@ public class GoalKeeper : MonoBehaviour
     public GameObject soccerBall;
     public GameObject Post;
     public GameObject controller;
+    
+
+
     private float startTime;
     private bool moveController=false;
 
@@ -45,10 +48,10 @@ public class GoalKeeper : MonoBehaviour
             Vector3 relativeBallPos = new Vector3((targetPos.x - 2.2f) * -1, targetPos.y - 5.6f, 0);
             //controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), relativeBallPos, (Time.time - startTime) / (0.96f- timeTillJump));
             float slerpTimeFraction = (Time.time - startTime) / ((0.96f - timeTillJump) * 2);
-            slerp = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3((targetPos.x - 2.2f) * -2 , 0, 0), Utilities.InOut(slerpTimeFraction));
+            //slerp = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3((targetPos.x - 2.2f) * -2 , 0, 0), Utilities.InOut(slerpTimeFraction));
 
             float yPos = ( ((slerp.y-1)) * relativeBallPos.y)+1;
-            controller.transform.position = new Vector3(slerp.x, slerp.y, 0);
+            //controller.transform.position = new Vector3(slerp.x, slerp.y, 0);
             if (slerpTimeFraction >= 0.495f && slerpTimeFraction <= 0.505f)
             {
                 //Debug.Log("target pos: " + relativeBallPos);
@@ -143,6 +146,14 @@ public class GoalKeeper : MonoBehaviour
     
     private void PlayAnimation(float targetPositionX, float targetPositionY)
     {
+        foreach (AnimationClip clip in anim.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == "MyLongDive")
+            {
+                Debug.Log(clip.name);
+                
+            }
+        }
 
         this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
         
@@ -156,6 +167,8 @@ public class GoalKeeper : MonoBehaviour
         //Debug.Log("start playing anim");
         //Debug.Log("Controller start pos: " + controller.transform.position);
         yield return new WaitForSeconds(timeTillJump);
+
+        
 
         moveController = true;
         startTime = Time.time;
