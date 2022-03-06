@@ -12,9 +12,19 @@ public class GoalKeeper : MonoBehaviour
     public GameObject soccerBall;
     public GameObject Post;
     public GameObject controller;
-    
+    private AnimationCurve xMotion;
+   Vector2[] xMotionKeys = { 
+        new Vector2(0,0),
+        new Vector2(-0.18f,0.24f),
+        new Vector2(-2.6f,1.4f),
+        new Vector2(-2.6f,2.07f),
+        new Vector2(-2.06f,2.55f),
 
 
+
+    };
+
+    int animFrame;
     private float startTime;
     private bool moveController=false;
 
@@ -27,6 +37,8 @@ public class GoalKeeper : MonoBehaviour
         anim = GetComponent<Animator>();
 
         cam = GameObject.Find("Camera").GetComponent<Camera>();
+
+        xMotion.AddKey
 
     }
     private Vector2 targetPos;
@@ -45,6 +57,7 @@ public class GoalKeeper : MonoBehaviour
 
         if (moveController)
         {
+            /*
             Vector3 relativeBallPos = new Vector3((targetPos.x - 2.2f) * -1, targetPos.y - 5.6f, 0);
             //controller.transform.position = Vector3.Lerp(new Vector3(0, 1, 0), relativeBallPos, (Time.time - startTime) / (0.96f- timeTillJump));
             float slerpTimeFraction = (Time.time - startTime) / ((0.96f - timeTillJump) * 2);
@@ -54,21 +67,19 @@ public class GoalKeeper : MonoBehaviour
             //controller.transform.position = new Vector3(slerp.x, slerp.y, 0);
             if (slerpTimeFraction >= 0.495f && slerpTimeFraction <= 0.505f)
             {
-                //Debug.Log("target pos: " + relativeBallPos);
-                //Debug.Log("slerp pos: " + slerp);
-
-                //Debug.Log("actual pos: " + controller.transform.position);
-
+                
             }
-
+            */
+            controller.transform.position = new Vector3(xMotion.Evaluate(Time.time - startTime),2,0);
+            Debug.Log(Time.time - startTime);
         }
-
+        animFrame += 1;
     }
 
 
     public void resetScene()
     {
-        controller.transform.position = new Vector3(0, 0, 0);
+        controller.transform.position = new Vector3(0, 1, 0);
         controller.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         moveController = false;
 
@@ -119,9 +130,6 @@ public class GoalKeeper : MonoBehaviour
         mousePosX -= MOUSE_ERROR_X;
         mousePosY -= MOUSE_ERROR_Y;
 
-        
-
-
         float postRightX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostRight").transform.position).x;
         float postLeftX = cam.WorldToScreenPoint(GameObject.FindGameObjectWithTag("PostLeft").transform.position).x;
 
@@ -156,29 +164,15 @@ public class GoalKeeper : MonoBehaviour
         }
 
         this.anim.SetTrigger(calculateAppropiateAnimation(targetPositionX, targetPositionY));
-        
-
-        StartCoroutine( StartController());
-
-    }
-
-    IEnumerator StartController()
-    {
-        //Debug.Log("start playing anim");
-        //Debug.Log("Controller start pos: " + controller.transform.position);
-        yield return new WaitForSeconds(timeTillJump);
-
-        
 
         moveController = true;
         startTime = Time.time;
+        animFrame = 0;
+        //StartCoroutine( StartController());
 
-        
-        
-        
-        //Debug.Log("start moving controller");
     }
 
+   
   
 
     private String calculateAppropiateAnimation(float x,float y)
