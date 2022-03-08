@@ -165,6 +165,8 @@ public class GoalKeeper : MonoBehaviour
         
 
         soccerBall.transform.position = new Vector3(0, 0.11f, 11);
+        soccerBall.transform.rotation = new Quaternion(0, 0, 0, 0);
+
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(0,0 ,0);
         soccerBall.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
         soccerBall.GetComponent<GoalDetection>().setGoalStatusFalse();
@@ -336,7 +338,7 @@ public class GoalKeeper : MonoBehaviour
 
     Keyframe[] xLongDiveAnimKeys(float targetX)
     {
-        float deltaTarget = -2.1f - targetX;
+        float deltaTarget = -1.9f - targetX;
         float deltaTime = deltaTarget / 4;
         
         Keyframe[] xMotionKeys = {
