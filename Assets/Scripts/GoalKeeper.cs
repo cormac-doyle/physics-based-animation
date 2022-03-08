@@ -11,9 +11,10 @@ public class GoalKeeper : MonoBehaviour
     public Animator anim;
     public GameObject soccerBall;
     public GameObject Post;
+    public GameObject IKtarget;
     //public GameObject controller;
     private AnimationCurve xMotion;
-    
+    AnimatorClipInfo[] m_CurrentClipInfo;
 
     private AnimationCurve yMotion;
     Keyframe[] yMotionKeys = {
@@ -55,10 +56,17 @@ public class GoalKeeper : MonoBehaviour
 
     private AnimationCurve zMotion;
     Keyframe[] zMotionKeys = {
-        new Keyframe(0.0f,0.12196982f),
+        new Keyframe(0.0f,0.11815512f),
         new Keyframe(0.116666675f,0.1559398f),
-        new Keyframe(2.15f,0.88460416f),
-        new Keyframe(3.4333334f,0.869657f),
+        new Keyframe(0.26666668f,0.22501776f),
+        new Keyframe(0.38333336f,0.2918865f),
+        new Keyframe(0.4666667f,0.35818994f),
+        new Keyframe(1.4166666f,1.0992892f),
+        new Keyframe(1.5166667f,1.1128795f),
+        new Keyframe(2.0666666f,1.0828496f),
+        new Keyframe(2.4166667f,1.1019281f),
+        new Keyframe(2.9166667f,1.1487993f),
+        new Keyframe(3.35f,1.188141f),
     };
 
 
@@ -76,8 +84,18 @@ public class GoalKeeper : MonoBehaviour
 
         cam = GameObject.Find("Camera").GetComponent<Camera>();
 
-
+        //Get them_Animator, which you attach to the GameObject you intend to animate.
         
+        //Fetch the current Animation clip information for the base layer
+        m_CurrentClipInfo = this.anim.GetCurrentAnimatorClipInfo(0);
+        //Access the current length of the clip
+        Debug.Log(m_CurrentClipInfo[0].clip.length);
+        //Access the Animation clip name
+        Debug.Log(m_CurrentClipInfo[0].clip.name);
+        //Access the current length of the clip
+        
+
+
 
         yMotion = new AnimationCurve(yMotionKeys)
         {
@@ -106,8 +124,12 @@ public class GoalKeeper : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+
             targetPos = calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
+            Debug.Log("target pos " + targetPos);
+            //IKtarget.transform.position = new Vector3(-targetPos.x -0.2f,targetPos.y-5f, transform.position.z + 0.1f);
         }
+        IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
 
         if (moveController)
         {
@@ -139,7 +161,7 @@ public class GoalKeeper : MonoBehaviour
         moveController = false;
 
         gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-        gameObject.transform.position = new Vector3(0, 0, 0);
+        gameObject.transform.position = new Vector3(0, 0.871f, 0);
         
 
         soccerBall.transform.position = new Vector3(0, 0.11f, 11);
@@ -314,34 +336,62 @@ public class GoalKeeper : MonoBehaviour
 
     Keyframe[] xLongDiveAnimKeys(float targetX)
     {
-        float deltaTarget = -2.0f - targetX;
+        float deltaTarget = -2.1f - targetX;
+        float deltaTime = deltaTarget / 4;
         
         Keyframe[] xMotionKeys = {
             new Keyframe(0.0f,-0.000566336f),
+            new Keyframe(0.016666668f,-0.0046848734f),
+            new Keyframe(0.033333335f,-0.008677616f),
+            new Keyframe(0.050000004f,-0.0132981045f),
+            new Keyframe(0.083333336f,-0.022467349f),
+            new Keyframe(0.116666675f,-0.03419516f),
             new Keyframe(0.21666668f,-0.08403428f),
+            new Keyframe(0.26666668f,-0.110996194f),
             new Keyframe(0.40000004f,-0.19052769f),
-            
-            new Keyframe(1.65f, -2.7f-deltaTarget),
-            new Keyframe(2.15f, -2.7f-deltaTarget),
-            new Keyframe(3.0333333f,-2.1125505f-deltaTarget),
-            new Keyframe(3.4f,-2.077866f-deltaTarget),
+            new Keyframe(0.5666667f,-0.352668f),
+
+            //change the value of these keyframe by deltaTarget
+            new Keyframe(1.4166666f ,-2.2655077f - deltaTarget),
+            new Keyframe(1.4833333f,-2.3841467f- deltaTarget),
+            new Keyframe(1.7f ,-2.6709766f- deltaTarget),
+            new Keyframe(1.9166666f ,-2.7526927f- deltaTarget),
+            new Keyframe(2.15f,-2.6698003f- deltaTarget),
+            new Keyframe(2.3666666f ,-2.4839697f- deltaTarget),
+            new Keyframe(2.7166667f ,-2.2311354f- deltaTarget),
+            new Keyframe(2.95f ,-2.1240964f- deltaTarget),
+            new Keyframe(3.3666666f ,-2.159121f- deltaTarget),
+            new Keyframe(3.4333334f ,-2.1579838f- deltaTarget),
         };
         return xMotionKeys;
     }
 
     Keyframe[] yLongDiveAnimKeys(float targetY)
     {
+
         float deltaTarget = targetY - 5.6f - 0.75f;
         Debug.Log("deltaTargetY"+deltaTarget);
-        Keyframe[] xMotionKeys = {
+
+        if (deltaTarget<-0.3f)
+        {
+            deltaTarget = -0.3f;
+        }
+        Keyframe[] yMotionKeys = {
             new Keyframe(0.0f,0.8713843f),
             new Keyframe(0.18333334f,0.87865144f),
             new Keyframe(0.36666667f,0.882017f),
-            new Keyframe(0.46666667f,0.7688567f),
-            new Keyframe(0.5833333f,0.75661373f),
-            new Keyframe(0.6666667f,0.8082674f),
+            new Keyframe(0.5166667f,0.7710004f),
+            new Keyframe(0.6f,0.7587574f),
+            new Keyframe(0.7166667f,0.8104111f),
+            //change these keyframes for height trajectory
+           
+            new Keyframe(0.95f,1.1528177f+ deltaTarget),
+            new Keyframe(1.0166667f,1.1782308f+ deltaTarget),
+            new Keyframe(1.0833334f,1.1426175f+ deltaTarget),
             
-            new Keyframe(1f,1.0467006f + deltaTarget),
+            //end of height traj
+            new Keyframe(1.4333333f,0.2554124f),
+            new Keyframe(1.4833335f,0.2251735f),
             new Keyframe(1.6000001f,0.22811729f),
             new Keyframe(1.7f,0.22108105f),
             new Keyframe(1.8500001f,0.21924546f),
@@ -351,11 +401,15 @@ public class GoalKeeper : MonoBehaviour
             new Keyframe(2.3833334f,0.24862887f),
             new Keyframe(2.4333334f,0.27423528f),
             new Keyframe(2.4833333f,0.30703562f),
+            new Keyframe(2.6166668f,0.4143935f),
+            new Keyframe(2.7166667f,0.48592114f),
+            new Keyframe(2.8166668f,0.5903662f),
+            new Keyframe(2.966667f,0.74761033f),
             new Keyframe(3.15f,0.8718355f),
             new Keyframe(3.3000002f,0.8411015f),
             new Keyframe(3.4f,0.8508375f),
         };
-        return xMotionKeys;
+        return yMotionKeys;
     }
 
 }
