@@ -34,6 +34,7 @@ public class GoalKeeper : MonoBehaviour
    
     private float startTime;
     private bool applyRootMotion=false;
+    private float longDiveTimeTillTakeoff = 0.46f;
 
 
     Camera cam;
@@ -68,6 +69,9 @@ public class GoalKeeper : MonoBehaviour
 
             targetPos = calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
             Debug.Log("target pos " + targetPos);
+
+            anim.speed = 1.2f;
+
             //IKtarget.transform.position = new Vector3(-targetPos.x -0.2f,targetPos.y-5f, transform.position.z + 0.1f);
         }
         IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
@@ -75,12 +79,19 @@ public class GoalKeeper : MonoBehaviour
         if (applyRootMotion)
         {
             float deltaTime = Time.time - startTime;
+
+            if (deltaTime > 0.46f)
+            {
+                anim.speed = 1f;
+            }
+
             transform.position = new Vector3(rootAnimCurves.x.Evaluate(deltaTime), rootAnimCurves.y.Evaluate(deltaTime), rootAnimCurves.z.Evaluate(deltaTime));
             //Debugging
             if(soccerBall.transform.position.z<1f && soccerBall.transform.position.z > 0.75f)
             {
                 Debug.Log("Actual Target Ball Pos: " + soccerBall.transform.position);
             }
+            
         }
         
     }
@@ -91,18 +102,18 @@ public class GoalKeeper : MonoBehaviour
         //transform.position = new Vector3(0, 1, 0);
         //GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         applyRootMotion = false;
-
+        
         gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         gameObject.transform.position = new Vector3(0, 0.871f, 0);
-        
 
+        soccerBall.transform.parent = null;
         soccerBall.transform.position = new Vector3(0, 0.11f, 11);
         soccerBall.transform.rotation = new Quaternion(0, 0, 0, 0);
 
         soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(0,0 ,0);
         soccerBall.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
         soccerBall.GetComponent<GoalDetection>().setGoalStatusFalse();
-
+        soccerBall.GetComponent<Rigidbody>().isKinematic = false;
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

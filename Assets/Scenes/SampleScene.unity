@@ -1869,6 +1869,7 @@ GameObject:
   - component: {fileID: 670013762}
   - component: {fileID: 670013766}
   - component: {fileID: 670013761}
+  - component: {fileID: 670013767}
   m_Layer: 0
   m_Name: SoccerBall
   m_TagString: SoccerBall
@@ -1980,6 +1981,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &670013767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670013760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91c9adc80a032fc4295485f46385e594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHand: {fileID: 1432853314}
+  rightHand: {fileID: 228663700}
+  rigGameObject: {fileID: 1005953986}
 --- !u!4 &670963748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4042427859692680568, guid: cdc0b16cbd44dfc4680c7b62210e4a76, type: 3}
