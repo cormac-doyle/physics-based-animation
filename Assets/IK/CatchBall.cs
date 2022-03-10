@@ -11,6 +11,9 @@ public class CatchBall : MonoBehaviour
     public GameObject rightHand;
     public GameObject rigGameObject;
     private Rig rig;
+    private bool leftHandCollision = false;
+    private bool rightHandCollision = false;
+
     private bool isCaught = false;
     private float rigWeight;
     // Start is called before the first frame update
@@ -53,7 +56,9 @@ public class CatchBall : MonoBehaviour
         else
         {
             rig.weight = Mathf.Lerp(rig.weight, 0.0f, Time.deltaTime * 3f);
-        }
+            leftHandCollision = false;
+            rightHandCollision = false;
+}
       
     }
 
@@ -64,16 +69,21 @@ public class CatchBall : MonoBehaviour
         {
             //If the GameObject's name matches the one you suggest, output this message in the console
             Debug.Log("Left Hand Hit");
+            leftHandCollision = true;
         }
 
         //Check for a match with the specific tag on any GameObject that collides with your GameObject
         if (collision.gameObject.name == "mixamorig:RightHand")
         {
-            if (!isCaught)
-            {
-                isCaught = true;
-                catchBall();
-            }
+            Debug.Log("Right Hand Hit");
+
+            rightHandCollision = true;
+        }
+
+        if (leftHandCollision==true && rightHandCollision == true)
+        {
+            isCaught = true;
+            catchBall();
         }
     }
 

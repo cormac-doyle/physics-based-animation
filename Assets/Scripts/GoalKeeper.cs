@@ -5,18 +5,33 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public struct RootAnimCurves
 {
-    //Variable declaration
-    //Note: I'm explicitly declaring them as public, but they are public by default. You can use private if you choose.
+
     public AnimationCurve x;
     public AnimationCurve y;
     public AnimationCurve z;
 
-    //Constructor (not necessary, but helpful)
     public RootAnimCurves(AnimationCurve x, AnimationCurve y, AnimationCurve z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
+
+    }
+}
+public struct RotationAnimCurves
+{
+    public AnimationCurve x;
+    public AnimationCurve y;
+    public AnimationCurve z;
+    public AnimationCurve w;
+
+    public RotationAnimCurves(AnimationCurve x, AnimationCurve y, AnimationCurve z, AnimationCurve w)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+
 
     }
 }
@@ -27,15 +42,19 @@ public class GoalKeeper : MonoBehaviour
     public Animator anim;
     public GameObject soccerBall;
     public GameObject Post;
-    public GameObject IKtarget;
+    private GameObject IKtarget;
     //public GameObject controller;
 
     private RootAnimCurves rootAnimCurves;
-   
+    private RotationAnimCurves rootRotationAnimCurves;
+
+
     private float startTime;
     private bool applyRootMotion=false;
     private float longDiveTimeTillTakeoff = 0.46f;
 
+    private String currentAnimName = "Idle";
+    
 
     Camera cam;
     // Start is called before the first frame update
@@ -44,7 +63,7 @@ public class GoalKeeper : MonoBehaviour
         anim = GetComponent<Animator>();
 
         cam = GameObject.Find("Camera").GetComponent<Camera>();
-
+        IKtarget = GameObject.Find("IKtarget");
         //Get them_Animator, which you attach to the GameObject you intend to animate.
         
         //Fetch the current Animation clip information for the base layer
@@ -70,10 +89,11 @@ public class GoalKeeper : MonoBehaviour
             targetPos = calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
             Debug.Log("target pos " + targetPos);
 
-            anim.speed = 1.2f;
+            anim.speed = 1f;
 
             //IKtarget.transform.position = new Vector3(-targetPos.x -0.2f,targetPos.y-5f, transform.position.z + 0.1f);
         }
+
         IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
 
         if (applyRootMotion)
@@ -86,14 +106,20 @@ public class GoalKeeper : MonoBehaviour
             }
 
             transform.position = new Vector3(rootAnimCurves.x.Evaluate(deltaTime), rootAnimCurves.y.Evaluate(deltaTime), rootAnimCurves.z.Evaluate(deltaTime));
+            
+            if(currentAnimName == "longDiveLeft")
+            {
+                transform.rotation = new Quaternion(rootRotationAnimCurves.x.Evaluate(deltaTime), rootRotationAnimCurves.y.Evaluate(deltaTime), rootRotationAnimCurves.z.Evaluate(deltaTime), rootRotationAnimCurves.w.Evaluate(deltaTime));
+
+            }
+
             //Debugging
-            if(soccerBall.transform.position.z<1f && soccerBall.transform.position.z > 0.75f)
+            if (soccerBall.transform.position.z<1f && soccerBall.transform.position.z > 0.75f)
             {
                 Debug.Log("Actual Target Ball Pos: " + soccerBall.transform.position);
             }
             
         }
-        
     }
 
 
@@ -115,6 +141,8 @@ public class GoalKeeper : MonoBehaviour
         soccerBall.GetComponent<GoalDetection>().setGoalStatusFalse();
         soccerBall.GetComponent<Rigidbody>().isKinematic = false;
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        currentAnimName = "Idle";
     }
 
     public Vector2 calcBallTargetPos(float mousePosX, float mousePosY)
@@ -176,21 +204,21 @@ public class GoalKeeper : MonoBehaviour
     private void PlayAnimation(float targetPositionX, float targetPositionY)
     {
 
-        String animationName = calculateAppropiateAnimation(targetPositionX, targetPositionY);
+        currentAnimName = calculateAppropiateAnimation(targetPositionX, targetPositionY);
 
-        if(animationName == "longDiveLeft")
+        if(currentAnimName == "longDiveLeft")
         {
             rootAnimCurves = LongDiveRoot.RootAnimCurves(targetPositionX, targetPositionY);
-
+            rootRotationAnimCurves = LongDiveRoot.RootRotationAnimCurves(targetPositionX, targetPositionY);
         }
 
-        if (animationName == "highCatchLeft")
+        if (currentAnimName == "highCatchLeft")
         {
             rootAnimCurves = HighCatchRoot.RootAnimCurves(targetPositionX, targetPositionY);
 
         }
 
-        this.anim.SetTrigger(animationName);
+        this.anim.SetTrigger(currentAnimName);
 
         applyRootMotion = true;
         Debug.Log("targetX: "+targetPositionX);
