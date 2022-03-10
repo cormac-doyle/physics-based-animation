@@ -23,7 +23,10 @@ public class CatchBall : MonoBehaviour
     void Update()
     {
         float zDistanceToBall = transform.position.z - rightHand.transform.position.z;
-
+        if (zDistanceToBall>10f) //check for a reset scene
+        {
+            isCaught = false;
+        }
 
         if (!isCaught)
         {
@@ -46,6 +49,10 @@ public class CatchBall : MonoBehaviour
                 rig.weight = Mathf.Lerp(rig.weight, rigWeight, Time.deltaTime * 3f);
             }
 
+        }
+        else
+        {
+            rig.weight = Mathf.Lerp(rig.weight, 0.0f, Time.deltaTime * 3f);
         }
       
     }
@@ -83,7 +90,7 @@ public class CatchBall : MonoBehaviour
         GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
 
 
-        rig.weight = Mathf.Lerp(rig.weight, 0.0f, Time.deltaTime * 3f);
+        
 
     }
 }
