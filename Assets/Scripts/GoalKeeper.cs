@@ -104,12 +104,16 @@ public class GoalKeeper : MonoBehaviour
 
         }
 
-        IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
+        //IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
+        IKtarget.transform.position = new Vector3(soccerBall.transform.position.x, soccerBall.transform.position.y, transform.position.z + 0.1f);
+
 
         if (applyRootMotion)
         {
-            anim.speed = 1f;
+            anim.speed = 1.0f;
             float deltaTime = Time.time - startTime;
+
+            
 
             if (deltaTime > 0.46f)
             {

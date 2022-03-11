@@ -60,23 +60,36 @@ public class CatchBall : MonoBehaviour
         }
 
     }
-
+    Transform parentHand;
     void OnCollisionEnter(Collision collision)
     {
         //Check for a match with the specified name on any GameObject that collides with your GameObject
-        if (collision.gameObject.name == "mixamorig:LeftHand")
+        if (collision.gameObject.name == "LeftHandPalm" )
         {
+
+            Debug.Log("Lefthand contact points: " + collision.contacts[0].point);
+
             //If the GameObject's name matches the one you suggest, output this message in the console
             Debug.Log("Left Hand Hit");
             leftHandCollision = true;
+
+            if (!rightHandCollision)
+            {
+                parentHand = leftHand.transform;
+            }
         }
 
         //Check for a match with the specific tag on any GameObject that collides with your GameObject
-        if (collision.gameObject.name == "mixamorig:RightHand")
+        if (collision.gameObject.name == "RightHandPalm")
         {
             Debug.Log("Right Hand Hit");
+            Debug.Log("Rightthand contact points: " + collision.contacts[0].point);
 
             rightHandCollision = true;
+            if (!leftHandCollision)
+            {
+                parentHand = rightHand.transform;
+            }
         }
 
         if (leftHandCollision==true && rightHandCollision == true)
@@ -89,15 +102,21 @@ public class CatchBall : MonoBehaviour
             isCaught = true;
             
         }
+
+        
+
     }
 
     void catchBall()
     {
         //If the GameObject has the same tag as specified, output this message in the console
         Debug.Log("Right Hand Hit");
-        transform.SetParent(rightHand.transform);
+        transform.SetParent(parentHand);
         //transform.position = new Vector3(0, 0f, 0f);
         transform.rotation = new Quaternion(0, 0, 0, 0);
+        //transform.position = rightHand.transform.position;
+
+        //transform.position = new Vector3(rightHand.transform.position.x, rightHand.transform.position.y - 0.2f, rightHand.transform.position.z);
 
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);

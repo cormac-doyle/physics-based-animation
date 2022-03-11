@@ -44,7 +44,7 @@ public static class LongDiveRoot
             postWrapMode = WrapMode.Clamp
         };
 
-        AnimationCurve zRotation = new AnimationCurve(zRotationAnimKeys())
+        AnimationCurve zRotation = new AnimationCurve(zRotationAnimKeys(targetY))
         {
             preWrapMode = WrapMode.Clamp,
             postWrapMode = WrapMode.Clamp
@@ -157,8 +157,13 @@ public static class LongDiveRoot
 
     }
 
-    static Keyframe[] zRotationAnimKeys()
+    static Keyframe[] zRotationAnimKeys(float targetY)
     {
+        Debug.Log("Target Y Z rotation: " + targetY);
+        Debug.Log("Target Y Z rotation Normalised: " + (targetY-5.6f));
+
+        float rotateBy = (targetY - 5.6f)/10; 
+
         Keyframe[] zMotionKeys = {
             new Keyframe(0.0f,0.0042746644f),
             new Keyframe(0.050000004f,0.0065194797f),
@@ -188,17 +193,20 @@ public static class LongDiveRoot
             new Keyframe(0.5f,0.044432078f),
             new Keyframe(0.5166667f,0.05708778f),
             new Keyframe(0.6666667f,0.22076207f),
-            new Keyframe(0.8833333f,0.4163314f),
-            new Keyframe(0.95f,0.43062735f),
-            new Keyframe(1.0166667f,0.44252998f),
-            new Keyframe(1.1166667f,0.43783104f),
-            new Keyframe(1.2333333f,0.42959064f),
-            new Keyframe(1.2666667f,0.4431246f),
-            new Keyframe(1.2833333f,0.40941662f),
-            new Keyframe(1.3f,0.39349192f),
-            new Keyframe(1.3166667f,0.3764029f),
-            new Keyframe(1.35f,0.39093584f),
-            new Keyframe(1.4f,0.43328375f),
+            //laun angle start
+            new Keyframe(0.8833333f,0.4178115f-rotateBy),
+            new Keyframe(0.95f,0.43062735f-rotateBy),
+            new Keyframe(1.0166667f,0.44252998f-rotateBy),
+            new Keyframe(1.1166667f,0.43783104f-rotateBy),
+            new Keyframe(1.2333333f,0.42959064f-rotateBy),
+            new Keyframe(1.2666667f,0.4431246f-rotateBy),
+            new Keyframe(1.2833333f,0.40941662f-rotateBy),
+            new Keyframe(1.3f,0.39349192f-rotateBy),
+            new Keyframe(1.3166667f,0.3764029f-rotateBy),
+            new Keyframe(1.35f,0.39093584f-rotateBy),
+            new Keyframe(1.4f,0.43328375f-rotateBy),
+            //launch angle end
+
             new Keyframe(1.4333333f,0.50879204f),
             new Keyframe(1.5f,0.5488869f),
             new Keyframe(1.5333333f,0.5582433f),
