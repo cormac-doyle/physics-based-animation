@@ -45,16 +45,21 @@ public class GoalKeeper : MonoBehaviour
     private GameObject IKtarget;
     //public GameObject controller;
 
-    private RootAnimCurves rootAnimCurves;
+    private RootAnimCurves rootAnimCurves = IdleRoot.RootAnimCurves();
     private RotationAnimCurves rootRotationAnimCurves;
 
 
     private float startTime;
+    private float idleStartTime;
+
     private bool applyRootMotion=false;
     private float longDiveTimeTillTakeoff = 0.46f;
 
     private String currentAnimName = "Idle";
+
     
+
+    private bool shootBallTrigger=false;
 
     Camera cam;
     // Start is called before the first frame update
@@ -65,16 +70,15 @@ public class GoalKeeper : MonoBehaviour
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         IKtarget = GameObject.Find("IKtarget");
         //Get them_Animator, which you attach to the GameObject you intend to animate.
-        
-        //Fetch the current Animation clip information for the base layer
-     
-        
 
+        //Fetch the current Animation clip information for the base layer
+
+
+        idleStartTime = Time.time;
     }
 
-    
 
-    private Vector2 targetPos;
+    private Vector2 targetPos = new Vector2(0,0);
     private Vector3 slerp;
     // Update is called once per frame
     void Update()
@@ -85,19 +89,26 @@ public class GoalKeeper : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            shootBallTrigger = true;
+            
+        }
 
-            targetPos = calcBallTargetPos(Input.mousePosition.x,Input.mousePosition.y);
+        if (shootBallTrigger)
+        {
+            calcBallTargetPos(Input.mousePosition.x, Input.mousePosition.y);
             Debug.Log("target pos " + targetPos);
 
-            anim.speed = 1f;
+            shootBallTrigger = false;
+            
 
-            //IKtarget.transform.position = new Vector3(-targetPos.x -0.2f,targetPos.y-5f, transform.position.z + 0.1f);
+
         }
 
         IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
 
         if (applyRootMotion)
         {
+            anim.speed = 1f;
             float deltaTime = Time.time - startTime;
 
             if (deltaTime > 0.46f)
@@ -119,12 +130,22 @@ public class GoalKeeper : MonoBehaviour
                 Debug.Log("Actual Target Ball Pos: " + soccerBall.transform.position);
             }
             
+        } else //play Idle
+        {
+            float idleDeltaTime = Time.time - idleStartTime;
+
+            if (idleDeltaTime > 4.61f)
+            {
+                idleStartTime = 0f;
+            }
+            transform.position = new Vector3(rootAnimCurves.x.Evaluate(idleDeltaTime), rootAnimCurves.y.Evaluate(idleDeltaTime), rootAnimCurves.z.Evaluate(idleDeltaTime));
         }
     }
 
 
     public void resetScene()
     {
+        idleStartTime = Time.time;
         //transform.position = new Vector3(0, 1, 0);
         //GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         applyRootMotion = false;
@@ -142,10 +163,14 @@ public class GoalKeeper : MonoBehaviour
         soccerBall.GetComponent<Rigidbody>().isKinematic = false;
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
+        targetPos = new Vector2(0, 0);
+
+
         currentAnimName = "Idle";
+        rootAnimCurves = IdleRoot.RootAnimCurves();
     }
 
-    public Vector2 calcBallTargetPos(float mousePosX, float mousePosY)
+    public void calcBallTargetPos(float mousePosX, float mousePosY)
     {
 
     
@@ -155,19 +180,19 @@ public class GoalKeeper : MonoBehaviour
 
         shootBall(shootVelocities);
 
-        return shootVelocities;
+        
     }
 
-    public void shootBall(Vector2 targetPos)
+    public void shootBall(Vector2 shootTarget)
     {
         //Debug.Log(targetPos);
-        PlayAnimation(-targetPos.x, targetPos.y);
+        PlayAnimation(-shootTarget.x, shootTarget.y);
 
 
 
-        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-targetPos.x, targetPos.y, -10f);
+        soccerBall.GetComponent<Rigidbody>().velocity = new Vector3(-shootTarget.x, shootTarget.y, -10f);
         //Debug.Log("TimeShoot: "+Time.time);
-
+        targetPos = shootTarget;
     }
 
 

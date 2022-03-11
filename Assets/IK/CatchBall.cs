@@ -56,10 +56,9 @@ public class CatchBall : MonoBehaviour
         else
         {
             rig.weight = Mathf.Lerp(rig.weight, 0.0f, Time.deltaTime * 3f);
-            leftHandCollision = false;
-            rightHandCollision = false;
-}
-      
+
+        }
+
     }
 
     void OnCollisionEnter(Collision collision)
@@ -85,6 +84,11 @@ public class CatchBall : MonoBehaviour
             isCaught = true;
             catchBall();
         }
+        if (leftHandCollision == true || rightHandCollision == true)
+        {
+            isCaught = true;
+            
+        }
     }
 
     void catchBall()
@@ -100,7 +104,8 @@ public class CatchBall : MonoBehaviour
         GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
 
 
-        
+        leftHandCollision = false;
+        rightHandCollision = false;
 
     }
 }

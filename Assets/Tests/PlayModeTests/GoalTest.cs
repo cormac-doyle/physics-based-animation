@@ -56,6 +56,7 @@ public class GoalTest
             Vector2 targetPos = getTargetPos(i, targetZones[0]);
 
             goalkeeper.shootBall(normaliseTargetPos(targetPos));
+
             yield return new WaitForSeconds(3);
             saveCount += wasSaved(targetPos);
         }
@@ -78,6 +79,8 @@ public class GoalTest
             Vector2 targetPos = getTargetPos(i, targetZones[1]);
 
             goalkeeper.shootBall(normaliseTargetPos(targetPos));
+
+
             yield return new WaitForSeconds(3);
             saveCount += wasSaved(targetPos);
         }
