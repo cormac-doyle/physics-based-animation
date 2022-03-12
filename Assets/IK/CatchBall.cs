@@ -75,7 +75,7 @@ public class CatchBall : MonoBehaviour
 
             if (!rightHandCollision)
             {
-                parentHand = leftHand.transform;
+                parentHand = rightHand.transform;
             }
         }
 
@@ -88,7 +88,7 @@ public class CatchBall : MonoBehaviour
             rightHandCollision = true;
             if (!leftHandCollision)
             {
-                parentHand = rightHand.transform;
+                parentHand = leftHand.transform;
             }
         }
 
