@@ -31,8 +31,6 @@ public struct RotationAnimCurves
         this.y = y;
         this.z = z;
         this.w = w;
-
-
     }
 }
 

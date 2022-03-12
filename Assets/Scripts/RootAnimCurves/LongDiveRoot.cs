@@ -93,10 +93,18 @@ public static class LongDiveRoot
 
     static Keyframe[] yAnimKeys(float targetY)
     {
+        //set max
+        if (targetY > 7f)
+        {
+            targetY = 7f;
+        }
 
         float deltaTarget = targetY - 5.6f - 0.6f;
         Debug.Log("deltaTargetY" + deltaTarget);
 
+        
+
+        //set min
         if (deltaTarget < -0.3f)
         {
             deltaTarget = -0.3f;
@@ -193,7 +201,7 @@ public static class LongDiveRoot
             new Keyframe(0.5f,0.044432078f),
             new Keyframe(0.5166667f,0.05708778f),
             new Keyframe(0.6666667f,0.22076207f),
-            //laun angle start
+            //launh angle start
             new Keyframe(0.8833333f,0.4178115f-rotateBy),
             new Keyframe(0.95f,0.43062735f-rotateBy),
             new Keyframe(1.0166667f,0.44252998f-rotateBy),
