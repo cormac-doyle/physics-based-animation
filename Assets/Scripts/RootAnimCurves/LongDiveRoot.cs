@@ -61,6 +61,11 @@ public static class LongDiveRoot
 
     static Keyframe[] xAnimKeys(float targetX)
     {
+        Debug.Log("targetX for anim keys: " + targetX);
+        if (targetX<-3.233f)
+        {
+            targetX = -3.23f;
+        }
         float deltaTarget = -1.75f - targetX;
         float deltaTime = deltaTarget / 4;
 
