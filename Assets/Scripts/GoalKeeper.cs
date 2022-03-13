@@ -140,7 +140,7 @@ public class GoalKeeper : MonoBehaviour
             {
                 idleStartTime = 0f;
             }
-            transform.position = new Vector3(rootAnimCurves.x.Evaluate(idleDeltaTime), rootAnimCurves.y.Evaluate(idleDeltaTime), rootAnimCurves.z.Evaluate(idleDeltaTime));
+            //transform.position = new Vector3(rootAnimCurves.x.Evaluate(idleDeltaTime), rootAnimCurves.y.Evaluate(idleDeltaTime), rootAnimCurves.z.Evaluate(idleDeltaTime));
         }
     }
 
