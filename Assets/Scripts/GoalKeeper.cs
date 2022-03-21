@@ -41,6 +41,8 @@ public class GoalKeeper : MonoBehaviour
     public GameObject soccerBall;
     public GameObject Post;
     private GameObject IKtarget;
+    private GameObject IKtargetRight;
+
     //public GameObject controller;
 
     private RootAnimCurves rootAnimCurves = IdleRoot.RootAnimCurves();
@@ -67,6 +69,8 @@ public class GoalKeeper : MonoBehaviour
 
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         IKtarget = GameObject.Find("IKtarget");
+        IKtargetRight = GameObject.Find("IKtargetRight");
+
         //Get them_Animator, which you attach to the GameObject you intend to animate.
 
         //Fetch the current Animation clip information for the base layer
@@ -81,6 +85,7 @@ public class GoalKeeper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
         if (Input.GetKeyDown(KeyCode.R))
             resetScene();
@@ -103,9 +108,13 @@ public class GoalKeeper : MonoBehaviour
         }
 
         //IKtarget.transform.position = new Vector3(-targetPos.x - 0.2f, targetPos.y - 5f, transform.position.z + 0.1f);
-        IKtarget.transform.position = new Vector3(soccerBall.transform.position.x, soccerBall.transform.position.y, transform.position.z + 0.1f);
+        IKtargetRight.transform.position = new Vector3(soccerBall.transform.position.x, soccerBall.transform.position.y+0.05f, transform.position.z + 0.4f);
 
+        IKtarget.transform.position = new Vector3(soccerBall.transform.position.x, soccerBall.transform.position.y, transform.position.z + 0.4f);
 
+        
+        
+        
         if (applyRootMotion)
         {
             anim.speed = 1.0f;
@@ -118,13 +127,16 @@ public class GoalKeeper : MonoBehaviour
                 anim.speed = 1f;
             }
 
-            transform.position = new Vector3(rootAnimCurves.x.Evaluate(deltaTime), rootAnimCurves.y.Evaluate(deltaTime), rootAnimCurves.z.Evaluate(deltaTime));
+           
             
-            if(currentAnimName == "longDiveLeft")
+            transform.position = new Vector3(rootAnimCurves.x.Evaluate(deltaTime), rootAnimCurves.y.Evaluate(deltaTime), rootAnimCurves.z.Evaluate(deltaTime));
+            if (currentAnimName == "longDiveLeft")
             {
                 transform.rotation = new Quaternion(rootRotationAnimCurves.x.Evaluate(deltaTime), rootRotationAnimCurves.y.Evaluate(deltaTime), rootRotationAnimCurves.z.Evaluate(deltaTime), rootRotationAnimCurves.w.Evaluate(deltaTime));
 
             }
+            
+            
 
             //Debugging
             if (soccerBall.transform.position.z<1f && soccerBall.transform.position.z > 0.75f)
