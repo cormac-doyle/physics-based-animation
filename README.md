@@ -6,6 +6,7 @@ In this project I explore a variety of techniques to achieve an artificially int
 
 ## Reference Animations
 Using 5 motion capture animations from mixamo.com
+
 ![referenceAnimGIF](https://user-images.githubusercontent.com/57908067/159483595-fc093895-baf3-4c04-8876-ea3f0e8864e0.gif)
 
 
