@@ -7,5 +7,4 @@ In this project I explore a variety of techniques to achieve an artificially int
 
 ## Inverse Kinematics System:
 
-https://user-images.githubusercontent.com/57908067/159479546-299f5ee5-2f00-4390-ac4a-538592eb324d.mp4
-
+![IKDemoGIF](https://user-images.githubusercontent.com/57908067/159479611-f5263e23-a4d4-4c28-9c3a-45fd527b69a8.gif)
