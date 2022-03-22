@@ -4,6 +4,9 @@ In this project I explore a variety of techniques to achieve an artificially int
 ## Current Status Demo:
 ![ezgif com-gif-maker (4)](https://user-images.githubusercontent.com/57908067/158062625-8c302530-6eda-4d56-b8f5-7796c6616a41.gif)
 
+## Reference Animations
+![referenceAnimGIF](https://user-images.githubusercontent.com/57908067/159483595-fc093895-baf3-4c04-8876-ea3f0e8864e0.gif)
+
 
 ## Inverse Kinematics System:
 
