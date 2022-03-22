@@ -8,3 +8,7 @@ In this project I explore a variety of techniques to achieve an artificially int
 ## Inverse Kinematics System:
 
 ![IKDemoGIF](https://user-images.githubusercontent.com/57908067/159479611-f5263e23-a4d4-4c28-9c3a-45fd527b69a8.gif)
+
+## Ball Catch System Demo
+
+![ezgif com-gif-maker (8)](https://user-images.githubusercontent.com/57908067/159479827-3b2186d3-5d72-4e28-be64-1a9414768a43.gif)
